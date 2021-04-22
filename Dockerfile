@@ -1,4 +1,4 @@
-FROM wordpress:5.7.1-php7.3-fpm
+FROM wordpress:php7.3-fpm
 
 RUN apt-get update && apt-get install -y \
         libicu-dev \
