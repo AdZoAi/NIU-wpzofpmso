@@ -6,10 +6,12 @@ RUN apt-get update && apt-get install -y \
         libmagickwand-dev \
         libsodium-dev \
         libzip-dev \
-        --no-install-recommends && rm -r /var/lib/apt/lists/* \
-    && pecl install redis-4.2.0 imagick-3.4.3 libsodium-2.0.21 \
-    && docker-php-ext-enable redis imagick sodium
+        --no-install-recommends && rm -r /var/lib/apt/lists/*
 
-COPY ./ /usr/src/wordpress/
-EXPOSE 80
-EXPOSE 9000
+RUN pecl install redis-5.3.3 imagick-3.4.4 libsodium-2.0.23 \
+        && docker-php-ext-enable redis imagick sodium \
+        && docker-php-ext-install -j$(nproc) exif gettext intl sockets zip \
+        && sed -i -e '/listen/d' /usr/local/etc/php-fpm.d/zz-docker.conf \
+        && { echo 'listen = /sock/docker.sock'; } >> /usr/local/etc/php-fpm.d/zz-docker.conf
+
+RUN chown -R www-data:www-data /var/www/html
