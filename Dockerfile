@@ -1,13 +1,11 @@
 FROM wordpress:php7.4-fpm
 
 RUN apt-get update && apt-get install -y \
-        php-dev \
         libicu-dev \
         libmcrypt-dev \
         libmagickwand-dev \
         libsodium-dev \
         libzip-dev \
-        php-pear \
         --no-install-recommends && rm -r /var/lib/apt/lists/*
 
 RUN pecl install redis-5.3.4 imagick-3.5.0 libsodium-2.0.23 mcrypt-1.0.4\
